@@ -19,6 +19,7 @@ Then setup your Twilio account with:
 ```bash
 export TWILIO_ACCOUNT_SID=<your account sid>
 export TWILIO_AUTH_TOKEN=<your auth token>
+export TWILIO_PHONE_NUMBER=<your Twilio number>
 ```
 
 Then you can start the Node server:

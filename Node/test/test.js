@@ -1,8 +1,14 @@
 var assert = require("assert")
 
-var db = require('../db');
-var locks = require('../locks');
-var api = require('../api');
+var db = require('../db')();
+var locks = require('../locks')(db);
+var api = require('../api')(db);
+
+// Mock api
+api.sendSMS = function(to, message, callback) {
+    // console.log('sendSMS', to, message);
+    return callback(null, {});
+};
 
 // Fixtures
 var fakeCode = {
@@ -37,7 +43,6 @@ describe('Locks', function() {
             });
 
         });
-
 
         it('should find code', function(done) {
             locks.getCode(fakeCode.lock, fakeCode.code,
