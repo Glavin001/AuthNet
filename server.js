@@ -31,6 +31,15 @@ app.post('/submit-code', function(req, res) {
     });
 });
 
+app.get('/code', function(req, res) {
+    db.codes.find({}, function(err, codes) {
+        if (err) {
+            return res.send(err.message);
+        }
+        res.json(codes);
+    });
+});
+
 app.post('/code', function(req, res) {
     var body = req.body;
     console.log('code', body);
@@ -40,5 +49,5 @@ app.post('/code', function(req, res) {
 
 })
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 
