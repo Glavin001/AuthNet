@@ -18,7 +18,7 @@ namespace AuthNet
         static string _Host = "192.168.1.103";
         static int _Port = 3000;
 
-        static int roomId = 123;
+        static string lockId = "123";
 
         static IPAddress _Address = IPAddress.Parse("10.95.5.215");
 
@@ -52,16 +52,18 @@ namespace AuthNet
             kb.OnKeyDown += kb_OnKeyDown;
 
             Debug.Print("Listening for input");
-
-            StartBeeping();
+            PlayNote("c", 6, 200);
+            Thread.Sleep(100);
+            PlayNote("c", 6, 200);
 
             while (true)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(200);
                 //Debug.Print("Get Value");
-                ////LED.Write(false);
+                //_LED.Write(true);
                 //var Result = GetValue();
-                ////LED.Write(true);
+                //Thread.Sleep(200);
+                //_LED.Write(false);
                 //Debug.Print(Result);
 
                 //Debug.Print("Process Result");
@@ -77,9 +79,12 @@ namespace AuthNet
         static string _Code = null;
         static string _Entered = "";
         static string _SubmitChar = "#";
+        static string _ResetChar = "*";
 
         static void kb_OnKeyDown(uint KeyCode, uint data2, DateTime time)
         {
+            PlayNote("d", 6, 200);
+
             //if (_Beeping == false)
             //    return;
             Debug.Print("OnKeyDown: " + KeyCode);
@@ -92,19 +97,67 @@ namespace AuthNet
                 ClearDisplay(Serial1);
             }
 
-            // Check for Submit char
-            if (KeyText == _SubmitChar)
+            if (KeyText == _ResetChar)
             {
+                _Entered = "";
+                _CharCount = 0;
+                _LED.Write(false);
+
+                PlayNote("e", 6, 200);
+
+                return;
+            }
+            // Check for Submit char
+            else if (KeyText == _SubmitChar)
+            {
+                StopBeeping();
+
                 if (_CharCount == 0)
                 {
                     return;
                 }
-                string body = "code=" + _Entered + "&room=" + roomId;
-                string endpoint = "code";
-                SendToNode("POST", endpoint, body);
+                string body = "code=" + _Entered + "&lock=" + lockId;
+                string endpoint = "submit-code";
+                string response = SendToNode("POST", endpoint, body);
                 // Reset entered
                 _Entered = "";
                 _CharCount = 0;
+                // Check if should unlock
+                bool shouldUnlock = response.IndexOf("Unlock") != -1;
+                bool isCorrect = response.IndexOf("Correct") != -1;
+                // Unlock if applicable
+                if (shouldUnlock)
+                {
+                    PlayNote("d", 6, 200);
+                    Thread.Sleep(100);
+                    PlayNote("d", 6, 200);
+                    
+                    // TODO: Unlock!
+                    Debug.Print("UNLOCK!!!!!!!!!!!!!!!!!!!!!!!!");
+                    _LED.Write(true);
+
+                }
+                else
+                {
+                    _LED.Write(false);
+
+                    if (isCorrect)
+                    {
+                        // Correct, not unlock yet, still locked
+                        Debug.Print("Correct");
+                        PlayNote("d", 6, 200);
+                        StartBeeping();
+
+                    }
+                    else
+                    {
+                        // Incorrect
+                        Debug.Print("Incorrect");
+                        PlayNote("c", 5, 200);
+
+                    }
+                    
+                }
 
                 return;
             }
@@ -371,7 +424,7 @@ namespace AuthNet
             Port.Write(Bytes, 0, Length);
         }
 
-        static void SendToNode(String method, String endpoint, String body)
+        static string SendToNode(String method, String endpoint, String body)
         {
 
             var Entry = Dns.GetHostEntry(_Host);
@@ -408,8 +461,10 @@ namespace AuthNet
             if (numbytesread > 0)
             {
                 var chars = Encoding.UTF8.GetChars(buff, 0, numbytesread);
-                Debug.Print("Result: " + new String(chars));
+                //Debug.Print("Result: " + new String(chars));
+                return new String(chars);
             }
+            return "";
 
         }
 
