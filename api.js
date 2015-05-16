@@ -32,12 +32,22 @@ module.exports = function(db) {
 
                 // Check if any codes
                 if (codeDocs.length === 0) {
+                    // Record in logs
                     db.logs.insert({
                         time: new Date(),
                         lock: lock,
                         label: 'incorrect'
                     });
-
+                    // Send SMS to all users with code for lock
+                    // to let them know that someone may be breaking in
+                    db.codes.find({lock: lock}, function(err, codeDocs) {
+                        async.each(codeDocs, function(codeDoc, callback) {
+                            var message = "An incorrect code has been entered for "+codeDoc.lock;
+                            self.sendSMS(codeDoc.phone, message, callback);
+                        }, function() {
+                            // All users notified
+                        });
+                    });
                     // No codes found
                     return callback(null, false);
                 }
