@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "postinstall": "npm install bower && ./node_modules/.bin/bower install"
   },
   "author": "",
   "license": "MIT",

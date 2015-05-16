@@ -20,6 +20,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 // parse application/json
 app.use(bodyParser.json());
 
+// Public static content
+app.use(express.static('public'));
+
 app.post('/submit-code', function(req, res) {
     console.log(req.body, req.query, req.params);
     var code = req.body.code;
@@ -46,8 +49,16 @@ app.post('/code', function(req, res) {
     locks.createCode(body.lock, body.phone, body.name, !!body.isTemp, function(err, codeDoc) {
         res.json(codeDoc);
     });
+});
 
-})
+app.delete('/code', function(req, res) {
+    db.codes.remove(req.body, function(err, results) {
+        if (err) {
+            return res.send(err.message);
+        }
+        res.json(results);
+    });
+});
 
 app.listen(process.env.PORT || 3000);
 
