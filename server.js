@@ -61,7 +61,7 @@ app.delete('/code', function(req, res) {
 });
 
 app.get('/logs', function(req, res) {
-    db.logs.find({}).sort({ time: -1 })
+    db.logs.find({}).sort({ time: -1 }).limit(100)
     .exec(function(err, results) {
         if (err) {
             return res.send(err);

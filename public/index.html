@@ -25,7 +25,8 @@
         <div class="jumbotron">
             <h1>AuthNet</h1>
             <p>Netduino powered two-step authentication for your home</p>
-            <p><a class="btn btn-primary btn-lg" href="https://github.com/Glavin001/AuthNet" target="_blank" role="button">Learn more</a></p>
+            <p><a class="btn btn-primary btn-lg" href="http://siddharthjn.github.io/Authnet/" target="_blank" role="button">Learn more</a>
+                <a class="btn btn-success btn-lg" href="https://github.com/Glavin001/AuthNet" target="_blank" role="button">GitHub</a></p>
         </div>
 
         <div role="tabpanel">
@@ -43,9 +44,14 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <br/>
+
                 <div role="tabpanel" class="tab-pane fade in active" id="home">
-                    <p class="lead">Welcome! You can configure your home here.</p>
+                    <p class="lead">Welcome to AuthNet!</p>
+                    <p>You can go to <a href="#codes" aria-controls="codes" role="tab" data-toggle="tab">Codes</a> to see all of the available codes for users. For security reasons, you may wish to look at <a href="#logs" aria-controls="logs" role="tab"
+                        data-toggle="tab">Logs</a> to investigate whether someone has been attempting to access your home while you were away.
+                    </p>
                 </div>
+
                 <div role="tabpanel" class="tab-pane fade" id="codes">
                     <div id="codes-output"></div>
                     <script id="codes-template" type="text/x-handlebars-template">
@@ -76,7 +82,9 @@
                         <div class="list-group">
                             {{#each codes}}
                             <a href="#" class="list-group-item">
-                                <h4 class="list-group-item-heading">{{name}}'s Code for Lock {{lock}} {{#if temp}}
+                                <h4 class="list-group-item-heading">
+                                    <em>{{name}}</em>'s Code for
+                                    <em>{{lock}}</em> {{#if temp}}
                                     <span class="label label-success">Temporary</span>
                                     {{/if}}
                                     <button class="btn btn-danger pull-right remove-code-btn" data-code-id="{{_id}}">Remove</button>
@@ -102,8 +110,8 @@
                     <div id="logs-output"></div>
                     <script id="logs-template" type="text/x-handlebars-template">
                         <h3>
-                            {{messages.length}} Messages
-                            {{!-- <button class="btn btn-success refresh-logs-btn pull-right">Refresh</button> --}}
+                            {{messages.length}} Messages {{!--
+                            <button class="btn btn-success refresh-logs-btn pull-right">Refresh</button> --}}
                         </h3>
 
                         <br/>
@@ -117,7 +125,7 @@
                                     </div>
                                     <div class="col-md-7">{{lock}}</div>
                                     <div class="col-md-4">
-                                        <span class="pull-right">{{format-date "LLL" time}}</span>
+                                        <span class="pull-right">{{format-date "MMMM Do YYYY, h:mm:ss a" time}}</span>
                                     </div>
                                 </div>
                             </li>
