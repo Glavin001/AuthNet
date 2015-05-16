@@ -14,14 +14,16 @@ module.exports = function(db) {
 
     return {
 
-        // shouldUnlock: function(lock, code, callback) {
-        //     this.handleCode(lock, code, function(err, ) {
-        //         callback();
-        //     });
-        // },
-
         handleCode: function(lock, code, callback) {
             var self = this;
+
+            // Record message
+            db.logs.insert({
+                time: new Date(),
+                lock: lock,
+                label: 'submit'
+            });
+
             // Check if code exists
             locks.getCode(lock, code, function(err, codeDocs) {
                 if (err) {
@@ -30,6 +32,12 @@ module.exports = function(db) {
 
                 // Check if any codes
                 if (codeDocs.length === 0) {
+                    db.logs.insert({
+                        time: new Date(),
+                        lock: lock,
+                        label: 'incorrect'
+                    });
+
                     // No codes found
                     return callback(null, false);
                 }
@@ -50,10 +58,16 @@ module.exports = function(db) {
                     }
                 }, function(err, results) {
                     // console.log(err, results);
-                    callback(err, !_.every(results,
+                    var shouldUnlock = !_.every(results,
                         function(v) {
                             return v !== true;
-                        }));
+                        });
+                    db.logs.insert({
+                        time: new Date(),
+                        lock: lock,
+                        label: shouldUnlock ? "unlock" : "lock"
+                    });
+                    callback(err, shouldUnlock);
                 })
 
             });

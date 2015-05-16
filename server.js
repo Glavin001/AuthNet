@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.post('/submit-code', function(req, res) {
-    console.log(req.body, req.query, req.params);
+    // console.log(req.body, req.query, req.params);
     var code = req.body.code;
     var lock = req.body.lock;
     api.handleCode(lock, code, function(err, shouldUnlock) {
@@ -45,7 +45,7 @@ app.get('/code', function(req, res) {
 
 app.post('/code', function(req, res) {
     var body = req.body;
-    console.log('code', body);
+    // console.log('code', body);
     locks.createCode(body.lock, body.phone, body.name, !!body.isTemp, function(err, codeDoc) {
         res.json(codeDoc);
     });
@@ -59,6 +59,16 @@ app.delete('/code', function(req, res) {
         res.json(results);
     });
 });
+
+app.get('/logs', function(req, res) {
+    db.logs.find({}).sort({ time: -1 })
+    .exec(function(err, results) {
+        if (err) {
+            return res.send(err);
+        }
+        res.json(results);
+    })
+})
 
 app.listen(process.env.PORT || 3000);
 

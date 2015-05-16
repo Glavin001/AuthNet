@@ -34,22 +34,7 @@ module.exports = function(db) {
                 code: code.toString()
             }, callback);
         }
-
-        //, usersForCode: function(lock, code, callback) {
-        //     this.getCode(lock, code, function(err, codes) {
-        //         if (err) {
-        //             return callback(err, []);
-        //         }
-        //         var users = _.map(codes, function(code) {
-        //             return {
-        //                 phone: code.phone,
-        //                 name: code.name
-        //             }
-        //         });
-        //         callback(null, users);
-        //     });
-        // }
-
+        
     };
 
 };

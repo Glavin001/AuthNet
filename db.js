@@ -7,6 +7,10 @@ module.exports = function(databasePath) {
         "codes":  new Datastore({
             autoload: true,
             filename: (databasePath ? path.resolve(databasePath, "./codes.db") : undefined)
+        }),
+        "logs":  new Datastore({
+            autoload: true,
+            filename: (databasePath ? path.resolve(databasePath, "./logs.db") : undefined)
         })
     };
 

@@ -34,7 +34,7 @@
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
                 <li role="presentation"><a href="#codes" aria-controls="codes" role="tab" data-toggle="tab">Codes</a></li>
-                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+                <li role="presentation"><a href="#logs" aria-controls="logs" role="tab" data-toggle="tab">Logs</a></li>
                 <!--
                 <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
                 -->
@@ -50,7 +50,7 @@
                     <div id="codes-output"></div>
                     <script id="codes-template" type="text/x-handlebars-template">
                         <h3>
-                            {{this.length}} Codes
+                            {{codes.length}} Codes
 
                             <button class="btn btn-success refresh-codes-btn pull-right">Refresh</button>
                         </h3>
@@ -79,7 +79,6 @@
                                 <h4 class="list-group-item-heading">{{name}}'s Code for Lock {{lock}} {{#if temp}}
                                     <span class="label label-success">Temporary</span>
                                     {{/if}}
-
                                     <button class="btn btn-danger pull-right remove-code-btn" data-code-id="{{_id}}">Remove</button>
                                 </h4>
                                 <p class="list-group-item-text">
@@ -98,8 +97,35 @@
                     </script>
 
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="messages">
-                    <p class="lead">Coming soon!</p>
+                <div role="tabpanel" class="tab-pane fade" id="logs">
+
+                    <div id="logs-output"></div>
+                    <script id="logs-template" type="text/x-handlebars-template">
+                        <h3>
+                            {{messages.length}} Messages
+                            {{!-- <button class="btn btn-success refresh-logs-btn pull-right">Refresh</button> --}}
+                        </h3>
+
+                        <br/>
+
+                        <ul class="list-group">
+                            {{#each messages}}
+                            <li class="list-group-item {{classes}}">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <span class="label label-info">{{label}}</span>
+                                    </div>
+                                    <div class="col-md-7">{{lock}}</div>
+                                    <div class="col-md-4">
+                                        <span class="pull-right">{{format-date "LLL" time}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            {{/each}}
+                        </ul>
+
+                    </script>
+
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="settings">
                     Coming soon!
@@ -115,6 +141,9 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/handlebars/handlebars.min.js"></script>
+
+    <script src="bower_components/moment/min/moment.min.js"></script>
+
     <!-- Include main script -->
     <script src="index.js"></script>
 
