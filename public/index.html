@@ -35,19 +35,24 @@
                 <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
                 <li role="presentation"><a href="#codes" aria-controls="codes" role="tab" data-toggle="tab">Codes</a></li>
                 <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+                <!--
                 <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                -->
             </ul>
 
             <!-- Tab panes -->
             <div class="tab-content">
+                <br/>
                 <div role="tabpanel" class="tab-pane fade in active" id="home">
-                    Welcome! You can configure your home here.
+                    <p class="lead">Welcome! You can configure your home here.</p>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="codes">
                     <div id="codes-output"></div>
                     <script id="codes-template" type="text/x-handlebars-template">
                         <h3>
                             {{this.length}} Codes
+
+                            <button class="btn btn-success refresh-codes-btn pull-right">Refresh</button>
                         </h3>
 
                         <form class="form-inline add-code-form">
@@ -94,10 +99,10 @@
 
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="messages">
-                    All messages
+                    <p class="lead">Coming soon!</p>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="settings">
-                    Coming soon
+                    Coming soon!
                 </div>
             </div>
 

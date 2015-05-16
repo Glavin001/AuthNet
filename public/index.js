@@ -20,6 +20,7 @@ $(document).ready(function() {
         // Refresh refs
         var $addCodeForm = $('.add-code-form');
         var $removeCodeBtn = $('.remove-code-btn');
+        var $refreshCodesBtn = $('.refresh-codes-btn');
 
         $addCodeForm.submit(function(event) {
             var $nameInput = $('#name-input');
@@ -40,6 +41,8 @@ $(document).ready(function() {
             removeCode($(event.target).data('code-id'))
             .then(refreshCodes);
         });
+
+        $refreshCodesBtn.click(refreshCodes);
 
     }
 
