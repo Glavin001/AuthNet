@@ -15,10 +15,10 @@ namespace AuthNet
     public class Program
     {
         // IMPORTANT: CHANGE _HOST
-        static string _Host = "192.168.1.103";
-        static int _Port = 3000;
+        static string _Host = "authnet.azurewebsites.net"; //"192.168.1.103";
+        static int _Port = 80; //3000;
 
-        static string lockId = "123";
+        static string lockId = "Team 20 - Lock 2";
 
         static IPAddress _Address = IPAddress.Parse("10.95.5.215");
 
@@ -433,9 +433,9 @@ namespace AuthNet
             var s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPHostEntry ipHostInfo = Dns.GetHostEntry(_Host);
             IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint endPoint = new IPEndPoint(ipAddress, _Port);
+            IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, _Port);
             //var EndPoint = new IPEndPoint(_Address, 80);
-            s.Connect(endPoint);
+            s.Connect(ipEndPoint);
 
             var url = "http://" + _Host + "/" + endpoint;
 
